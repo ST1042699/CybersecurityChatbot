@@ -1,6 +1,6 @@
 ﻿using System;
 
-// this class is where the user will put there name and the chatbot will give a personalised welcome message //
+// This class is created to handle the user's input // 
 
 namespace CybersecurityChatbot
 {
