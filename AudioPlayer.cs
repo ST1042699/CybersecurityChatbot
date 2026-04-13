@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Media;
 
-// this code is used to handle my voice greeting which allows the .wav file to be played //
+// This class is created to handle the audio voice greeting for my project //
 
 namespace CybersecurityCahtbot
 {
