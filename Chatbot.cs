@@ -2,8 +2,7 @@
 using System;
 using System.Threading;
 
-// this is where the main chatbot logic is handles as well as my ASCII art and the chabtot repsonses //
-
+// This part of my chat bot is used to create my ASCII art //
 namespace CybersecurityChatbot
 {
     public class Chatbot
