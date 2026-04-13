@@ -84,6 +84,7 @@ __________                                                               __
             Console.ResetColor();
         }
 
+       // This part of my chatbot is where the chatbot responses are placed //
         private string GetCybersecurityResponse(string input)
         {
             // CHATBOT RESPONSE TOPICS //
