@@ -112,6 +112,8 @@ __________                                                               __
             if (input.Contains("backup") || input.Contains("data backup"))
                 return "Regular backups are very essential. Make at least 3 copies of your data. Save 1 on your actual laptop and 2 on a hard drive or flash drive.";
 
+            // The 9th question is my user friendly repsonse quesiton when my chatbot doesnt have a reponse //
+            
             // THIS IS A 9TH QUESTION A FRIENDLY OPTION IF THE REQUESTED QUESTION IS INVALID //
             return "I'm sorry, I could not understand your question. Can you please rephrase?";
         }
