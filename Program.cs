@@ -1,7 +1,6 @@
 ﻿using System;
-
- // This is created to run the chatbot and start the chatbot //
-
+ 
+// This class is used to handle the start of my project// 
 namespace CybersecurityChatbot
 {
     internal class Program
