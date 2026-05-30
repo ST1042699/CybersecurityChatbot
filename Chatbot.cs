@@ -1,15 +1,11 @@
-﻿using CybersecurityCahtbot;
-using System;
+﻿using System;
 using System.Threading;
 
-// Added correct CI workflows //
-// This part of my chat bot is used to create my ASCII art //
 namespace CybersecurityChatbot
 {
     public class Chatbot
     {
         private readonly User _user = new User();
-
         private readonly string _asciiArt = @"
 __________                                                               __    
 \______   \_____  ___  __  ____    ____    ____ _______  ___.__.______ _/  |_  
@@ -17,36 +13,27 @@ __________                                                               __
  |    |   \ / __ \_\   / \  ___/ |   |  \\  \___ |  | \/ \___  ||  |_> >|  |   
  |____|_  /(____  / \_/   \___  >|___|  / \___  >|__|    / ____||   __/ |__|   
         \/      \/            \/      \/      \/         \/     |__|           
-                                                                               
 ";
 
         public void Start()
         {
-            // VOICE GREETING IS PLACED HERE //
-            AudioPlayer.PlayGreeting();
+            PlayGreeting();
+            DisplayAsciiArt();
 
-            // DISPLAY ASCII ART HERE //
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(_asciiArt);
-            Console.ResetColor();
-
-            // GET USER'S NAME //
             _user.AskForName();
 
-            // A PERSONALISED WELCOME //
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine($"\nHello {_user.Name}! Welcome to the Cybersecurity Awareness Bot.");
             Console.WriteLine("I'm here to help you stay safe online.\n");
-            Console.WriteLine("I'm here to help you to stay safe online.\n");
             Console.ResetColor();
 
             ShowHeader();
 
-            bool running = true;
-            while (running)
+            bool isRunning = true;
+            while (isRunning)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write("\n Ask me anything about cybersecuirty (or type 'exit' to quit): ");
+                Console.Write("\nAsk me anything about cybersecurity (or type 'exit' to quit): ");
                 Console.ResetColor();
 
                 string input = Console.ReadLine()?.Trim();
@@ -57,23 +44,41 @@ __________                                                               __
                     continue;
                 }
 
-                if (input.ToLower() == "exit" || input.ToLower() == "quit" || input.ToLower() == "bye")
+                if (IsExitCommand(input))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\nThank you for using the Cybersecurity Awareness Bot. Stay safe online!");
-                    Console.ResetColor();
-                    running = false;
+                    ExitChat();
+                    isRunning = false;
                     continue;
                 }
 
-                // Get response and show the typing effect //
                 string response = GetCybersecurityResponse(input.ToLower());
+
                 Console.ForegroundColor = ConsoleColor.DarkBlue;
                 Console.Write("Bot: ");
                 TypeWriterEffect(response);
                 Console.ResetColor();
             }
+        }
 
+        private void PlayGreeting()
+        {
+            try
+            {
+                AudioPlayer.PlayGreeting();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Error playing greeting: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        private void DisplayAsciiArt()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(_asciiArt);
+            Console.ResetColor();
         }
 
         private void ShowHeader()
@@ -85,38 +90,24 @@ __________                                                               __
             Console.ResetColor();
         }
 
-       // This part of my chatbot is where the chatbot responses are placed //
-        private string GetCybersecurityResponse(string input)
+        private bool IsExitCommand(string input)
         {
-            // CHATBOT RESPONSE TOPICS //
-            if (input.Contains("password") || input.Contains("strong password"))
-                return "Use strong, unique passwords with uppercase, lowercase, numbers, ans symbols. Never reuse the same password across different accounts. Consider using a password manager.";
+            string lower = input.ToLower();
+            return lower == "exit" || lower == "quit" || lower == "bye";
+        }
 
-            if (input.Contains("phishing") || input.Contains("fake email"))
-                return " Phishing is when attackers send fake emails or messages pretending to be from trusted companies to steal your personal information. Always check the sender's email address and never click suspicious links.";
+        private void ExitChat()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\nThank you for using the Cybersecurity Awareness Bot. Stay safe online!");
+            Console.ResetColor();
+        }
 
-            if (input.Contains("two factor") || input.Contains("2FA") || input.Contains("multi factor"))
-                return "Two-Factor Authentication (2FA) adds an extra layer of security. Even if someone gets your password, they still need your second factor (like a code sent to your phone) to log in.";
-
-            if (input.Contains("virus") || input.Contains("malware") || input.Contains("ransomware"))
-                return "Malware does include virruses, ransome, as well as trojans. Always keep your antivrisus software updated, avoid downloading cracked software, and never open any email attachments from any unkknown senders.";
-
-            if (input.Contains("safe browsing") || input.Contains("https"))
-                return "Browsing safety tips: Always look for HTTPS and the padlock icon in the address bar. When banking or shopping avoid using any public Wi-Fi. Keep your broswers and operating systems updaeted.";
-
-            if (input.Contains("social engineering"))
-                return "Social engineering happens when attackers manipulate people into giving out confidential information. Be cautious when someone is pressuring for passwords or anything personal.";
-
-            if (input.Contains("update") || input.Contains("software update"))
-                return "Always install software promptly. Many cyberattacks will exploit know vulnerable information that have already been patched by developers.";
-
-            if (input.Contains("backup") || input.Contains("data backup"))
-                return "Regular backups are very essential. Make at least 3 copies of your data. Save 1 on your actual laptop and 2 on a hard drive or flash drive.";
-
-            // The 9th question is my user friendly repsonse quesiton when my chatbot doesnt have a reponse //
-            
-            // THIS IS A 9TH QUESTION A FRIENDLY OPTION IF THE REQUESTED QUESTION IS INVALID //
-            return "I'm sorry, I could not understand your question. Can you please rephrase?";
+        private void HandleInvalidInput()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Please type a question. Empty messages are not allowed.");
+            Console.ResetColor();
         }
 
         private void TypeWriterEffect(string text)
@@ -126,14 +117,30 @@ __________                                                               __
                 Console.Write(c);
                 Thread.Sleep(25);
             }
-            Console.WriteLine("\n");
+            Console.WriteLine();
         }
 
-        private void HandleInvalidInput()
+        private string GetCybersecurityResponse(string input)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Please type a question. Empty messages are not allowed.");
-            Console.ResetColor();
+            // Basic keyword recognition
+            if (input.Contains("password") || input.Contains("strong password"))
+                return "Use strong, unique passwords with uppercase, lowercase, numbers, and symbols. Never reuse the same password across different accounts. Consider using a password manager.";
+            if (input.Contains("phishing") || input.Contains("fake email"))
+                return "Phishing is when attackers send fake emails or messages pretending to be from trusted companies to steal your personal information. Always check the sender's email address and never click suspicious links.";
+            if (input.Contains("two factor") || input.Contains("2FA") || input.Contains("multi factor"))
+                return "Two-Factor Authentication (2FA) adds an extra layer of security. Even if someone gets your password, they still need your second factor (like a code sent to your phone) to log in.";
+            if (input.Contains("virus") || input.Contains("malware") || input.Contains("ransomware"))
+                return "Malware includes viruses, ransomware, and trojans. Keep your antivirus software updated, avoid downloading cracked software, and never open email attachments from unknown senders.";
+            if (input.Contains("safe browsing") || input.Contains("https"))
+                return "Browsing safety tips: Look for HTTPS and the padlock in the address bar. Avoid public Wi-Fi for sensitive transactions. Keep browsers and OS updated.";
+            if (input.Contains("social engineering"))
+                return "Social engineering involves manipulation to obtain confidential information. Be cautious when asked for passwords or personal info.";
+            if (input.Contains("update") || input.Contains("software update"))
+                return "Always install software updates promptly. They patch vulnerabilities that cybercriminals exploit.";
+            if (input.Contains("backup") || input.Contains("data backup"))
+                return "Regular backups are essential. Keep at least three copies, including one offline.";
+            // Default response
+            return "I'm sorry, I could not understand your question. Can you please rephrase?";
         }
     }
 }

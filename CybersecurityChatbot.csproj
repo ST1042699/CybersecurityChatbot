@@ -51,7 +51,6 @@
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".github\workflows\ci.yml" />
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
@@ -59,5 +58,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
